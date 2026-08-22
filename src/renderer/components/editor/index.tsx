@@ -2,7 +2,7 @@ import { Editor as MonacoEditor } from '@monaco-editor/react'
 import { useEffect, useState } from 'react'
 import { useCurrentFile } from 'renderer/states/currentFile'
 import { EditorNoCode } from './no-code'
-import * as monaco from 'monaco-editor'
+import { getLangId } from 'renderer/lib/utils'
 
 const { fs } = window
 
@@ -17,14 +17,12 @@ export function Editor() {
 
       if (!extension) return
 
-      const language = Object.values(monaco.languages.getLanguages()).find(e =>
-        e.extensions?.includes(`.${extension}`)
-      )
+      const languageId = getLangId(extension)
 
-      if (!language) {
+      if (!languageId) {
         setLanguage('plain')
       } else {
-        setLanguage(language.id)
+        setLanguage(languageId)
       }
 
       fs.getFileContent(filePath).then(setFileText)

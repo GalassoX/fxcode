@@ -13,7 +13,7 @@ export function FileExplorer() {
   }, [])
 
   return (
-    <div className="mt-5 mx-2 bg-transparent border-transparent text-accent w-fit">
+    <div className="mx-2 bg-transparent border-transparent text-sm w-full text-slate-50">
       {files.map(fname => (
         <FileExplorerBuilder file={fname} key={fname.name} />
       ))}
@@ -28,12 +28,12 @@ export function FileExplorerBuilder({ file }: { file: FileTree }) {
     return <FileExplorerFile filename={file.name} path={file.path} />
   }
 
-  const chevronClasses = 'w-4'
+  const chevronClasses = 'w-4 text-neutral-700'
 
   return (
     <>
       <button
-        className="flex text-neutral-500"
+        className="flex gap-2 mx-3 hover:bg-neutral-900 w-full rounded-sm"
         onClick={() => setIsExpanded(s => !s)}
       >
         {isExpanded ? (
@@ -44,7 +44,7 @@ export function FileExplorerBuilder({ file }: { file: FileTree }) {
         <p>{file.name}</p>
       </button>
       {isExpanded && (
-        <div className="ml-4">
+        <div className="border-l ml-4">
           {file.children.map(child => (
             <FileExplorerBuilder file={child} key={file.name} />
           ))}
