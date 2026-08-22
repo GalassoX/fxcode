@@ -4,7 +4,7 @@ export function EditorNoCode() {
   return (
     <div className="h-full flex justify-center items-center gap-2">
       <InfoIcon color="#ff6347" />
-      <p>Nade que mostrar</p>
+      <p>Nada que mostrar</p>
     </div>
   )
 }

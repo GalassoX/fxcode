@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useCurrentFile } from 'renderer/states/currentFile'
 import { EditorNoCode } from './no-code'
 import { getLangId } from 'renderer/lib/utils'
+import { EditorTabs } from './tabs'
 
 const { fs } = window
 
@@ -36,18 +37,21 @@ export function Editor() {
   }
 
   return (
-    <MonacoEditor
-      height="100%"
-      language={language}
-      options={{
-        minimap: {
-          enabled: true,
-        },
-        fontSize: 14,
-        automaticLayout: true,
-      }}
-      theme="vs-dark"
-      value={fileText}
-    />
+    <div className="h-full bg-vscode-bg">
+      <EditorTabs />
+      <MonacoEditor
+        height="100%"
+        language={language}
+        options={{
+          minimap: {
+            enabled: true,
+          },
+          fontSize: 14,
+          automaticLayout: true,
+        }}
+        theme="vs-dark"
+        value={fileText}
+      />
+    </div>
   )
 }
