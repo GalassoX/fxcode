@@ -1,20 +1,21 @@
 import { Editor as MonacoEditor } from '@monaco-editor/react'
 import { useEffect, useState } from 'react'
-import { useCurrentFile } from 'renderer/states/currentFile'
 import { EditorNoCode } from './no-code'
 import { getLangId } from 'renderer/lib/utils'
 import { EditorTabs } from './tabs'
+import { useTabFiles } from 'renderer/states/openFiles'
 
 const { fs } = window
 
 export function Editor() {
   const [fileText, setFileText] = useState<string>('')
   const [language, setLanguage] = useState<string>('')
-  const { filePath } = useCurrentFile()
+  const { currentFile } = useTabFiles()
 
   useEffect(() => {
-    if (filePath) {
-      const extension = filePath.split('.').at(-1)
+    console.log('currentFile changed')
+    if (currentFile) {
+      const extension = currentFile.name.split('.').at(-1)
 
       if (!extension) return
 
@@ -26,13 +27,13 @@ export function Editor() {
         setLanguage(languageId)
       }
 
-      fs.getFileContent(filePath).then(setFileText)
+      fs.getFileContent(currentFile.path).then(setFileText)
     }
 
     return () => {}
-  }, [filePath])
+  }, [currentFile])
 
-  if (filePath === '') {
+  if (!currentFile) {
     return <EditorNoCode />
   }
 

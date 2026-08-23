@@ -1,7 +1,6 @@
 import { DEFAULT_FILE_SVG_NAME, FILE_ICON_PATH } from 'renderer/lib/constants'
 import { getLangId } from 'renderer/lib/utils'
-import { useCurrentFile } from 'renderer/states/currentFile'
-import { useOpenFiles } from 'renderer/states/openFiles'
+import { useTabFiles } from 'renderer/states/openFiles'
 
 type ComponentProps = {
   filename: string
@@ -9,12 +8,10 @@ type ComponentProps = {
 }
 
 export function FileExplorerFile({ filename, path }: ComponentProps) {
-  const { setCurrentFile } = useCurrentFile()
-  const { addFile } = useOpenFiles()
+  const { addFile } = useTabFiles()
 
   const onClickFile = () => {
-    setCurrentFile(path)
-    addFile({ name: filename, path })
+    addFile({ name: filename, path }, true)
   }
 
   const getIconUrl = () => {
