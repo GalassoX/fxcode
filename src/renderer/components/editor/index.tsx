@@ -13,7 +13,6 @@ export function Editor() {
   const { currentFile } = useTabFiles()
 
   useEffect(() => {
-    console.log('currentFile changed')
     if (currentFile) {
       const extension = currentFile.name.split('.').at(-1)
 

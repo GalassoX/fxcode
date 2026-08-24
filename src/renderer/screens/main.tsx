@@ -13,7 +13,7 @@ export function MainScreen() {
 
   return (
     <main className="flex justify-center h-screen bg-background overflow-x-hidden overflow-y-hidden">
-      <div className="w-1/3 overflow-scroll">
+      <div className="w-1/3">
         <FileExplorer />
       </div>
 

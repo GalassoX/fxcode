@@ -74,3 +74,7 @@ ipcMain.handle(IPC_EVENTS.FS_GET_FILES, async (): Promise<FileTree[]> => {
 ipcMain.handle(IPC_EVENTS.FS_GET_FILE_CONTENT, async (_, filePath) => {
   return await fs.readFile(filePath, 'utf-8')
 })
+
+ipcMain.handle(IPC_EVENTS.FS_GET_CURRENT_FOLDER_NAME, () => {
+  return path.basename(process.cwd())
+})

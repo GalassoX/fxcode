@@ -21,5 +21,7 @@ const fs = {
     ipcRenderer.invoke(IPC_EVENTS.FS_GET_FILES),
   getFileContent: (filename: string) =>
     ipcRenderer.invoke(IPC_EVENTS.FS_GET_FILE_CONTENT, filename),
+  getCurrentFolderName: (): Promise<string> =>
+    ipcRenderer.invoke(IPC_EVENTS.FS_GET_CURRENT_FOLDER_NAME),
 }
 contextBridge.exposeInMainWorld('fs', fs)
