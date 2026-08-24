@@ -18,7 +18,7 @@ export function FileExplorer() {
   }, [])
 
   return (
-    <div className="h-full mx-2 bg-transparent border-transparent text-sm w-full text-slate-50">
+    <div className="bg-transparent border-transparent text-sm w-full text-slate-50 h-full overflow-hidden">
       <div className="flex items-center justify-between">
         <div className="flex w-full">
           <button
@@ -37,7 +37,7 @@ export function FileExplorer() {
           <FilePlus className="w-4" />
         </div>
       </div>
-      <div className="overflow-scroll">
+      <div className="h-full overflow-y-auto rounded-xl shadow-lg scrollbar-gutter-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-button]:hidden [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-700/50 [&::-webkit-scrollbar-thumb]:rounded-full">
         {files.map(fname => (
           <FileExplorerBuilder file={fname} key={fname.name} />
         ))}

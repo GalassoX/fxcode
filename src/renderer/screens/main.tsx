@@ -12,12 +12,12 @@ export function MainScreen() {
   }, [])
 
   return (
-    <main className="flex justify-center h-screen bg-background overflow-x-hidden overflow-y-hidden">
-      <div className="w-1/3">
+    <main className="flex justify-center h-screen overflow-hidden bg-background">
+      <div className="w-1/3 h-full overflow-hidden">
         <FileExplorer />
       </div>
 
-      <div className="w-2/3">
+      <div className="w-2/3 h-full overflow-hidden">
         <Editor />
       </div>
     </main>
