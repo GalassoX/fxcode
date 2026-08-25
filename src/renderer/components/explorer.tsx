@@ -12,7 +12,7 @@ export function Explorer() {
   }, [])
 
   return (
-    <div className="w-1/3 h-full overflow-hidden">
+    <div className="w-1/3 h-full overflow-hidden border border-neutral-700 rounded-md p-2">
       <ExplorerTab
         component={<FileExplorer />}
         tabName={currentFolderName}

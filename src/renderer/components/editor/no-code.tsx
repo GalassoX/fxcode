@@ -2,7 +2,7 @@ import { InfoIcon } from 'lucide-react'
 
 export function EditorNoCode() {
   return (
-    <div className="h-full flex justify-center items-center gap-2">
+    <div className="h-full flex justify-center items-center gap-2 bg-vscode-bg">
       <InfoIcon color="#ff6347" />
       <p>Nada que mostrar</p>
     </div>

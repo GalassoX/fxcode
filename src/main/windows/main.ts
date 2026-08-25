@@ -17,6 +17,11 @@ export async function MainWindow() {
     resizable: true,
     alwaysOnTop: true,
     autoHideMenuBar: true,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#161116',
+      height: 34,
+    },
 
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
