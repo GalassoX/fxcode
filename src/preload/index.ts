@@ -11,7 +11,6 @@ declare global {
 const API = {
   sayHelloFromBridge: () => console.log('\nHello from bridgeAPI! 👋\n\n'),
   username: process.env.USER,
-  cwd: 'import.meta.filename',
 }
 
 contextBridge.exposeInMainWorld('App', API)
@@ -23,5 +22,15 @@ const fs = {
     ipcRenderer.invoke(IPC_EVENTS.FS_GET_FILE_CONTENT, filename),
   getCurrentFolderName: (): Promise<string> =>
     ipcRenderer.invoke(IPC_EVENTS.FS_GET_CURRENT_FOLDER_NAME),
+  onCwdChange: (callback: (newFiles: FileTree[]) => void) => {
+    const c = (_event: Electron.IpcRendererEvent, newFiles: FileTree[]) =>
+      callback(newFiles)
+
+    ipcRenderer.on(IPC_EVENTS.FS_ON_CWD_CHANGE, c)
+
+    return () => {
+      ipcRenderer.removeListener(IPC_EVENTS.FS_ON_CWD_CHANGE, c)
+    }
+  },
 }
 contextBridge.exposeInMainWorld('fs', fs)

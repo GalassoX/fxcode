@@ -12,4 +12,5 @@ export const IPC_EVENTS = {
   FS_GET_FILES: 'fs.getFiles',
   FS_GET_FILE_CONTENT: 'fs.getFileContent',
   FS_GET_CURRENT_FOLDER_NAME: 'fs.getCurrentFolterName',
+  FS_ON_CWD_CHANGE: 'fs.onCwdChange',
 } as const

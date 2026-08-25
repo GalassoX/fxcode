@@ -26,6 +26,9 @@ export default defineConfig({
       rollupOptions: {
         input: {
           index: resolve('src/main/index.ts'),
+          'workers/file-tree.worker': resolve(
+            'src/main/workers/file-tree.worker.ts'
+          ),
         },
 
         output: {

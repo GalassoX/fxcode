@@ -1,6 +1,6 @@
 import { DEFAULT_FILE_SVG_NAME, FILE_ICON_PATH } from 'renderer/lib/constants'
 import { getLangId } from 'renderer/lib/utils'
-import { useTabFiles } from 'renderer/states/openFiles'
+import { useTabFiles } from 'renderer/states/tabFiles'
 
 type ComponentProps = {
   filename: string
@@ -27,12 +27,14 @@ export function FileExplorerFile({ filename, path }: ComponentProps) {
   }
 
   return (
-    <button
-      className="flex gap-2 items-center px-3 w-full rounded-sm hover:bg-neutral-900 truncate"
+    // biome-ignore lint/a11y/useKeyWithClickEvents: button inner a button
+    // biome-ignore lint/a11y/noStaticElementInteractions: button inner a button
+    <div
+      className="flex gap-2 items-center px-3 w-full rounded-sm hover:bg-neutral-900 truncate cursor-pointer"
       onClick={onClickFile}
     >
       <img alt="icon" src={getIconUrl()} />
       {filename}
-    </button>
+    </div>
   )
 }

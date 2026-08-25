@@ -1,4 +1,4 @@
-import { type TabFile, useTabFiles } from 'renderer/states/openFiles'
+import { type TabFile, useTabFiles } from 'renderer/states/tabFiles'
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs'
 import { X } from 'lucide-react'
 import { getLangId } from 'renderer/lib/utils'
@@ -37,12 +37,14 @@ export function EditorTabs() {
           >
             <img alt="tabicon" src={getIconUrl(file.name)} />
             {file.name}
-            <button
+            {/** biome-ignore lint/a11y/noStaticElementInteractions: button inner a button */}
+            {/** biome-ignore lint/a11y/useKeyWithClickEvents: button inner a button */}
+            <span
               className="hover:bg-neutral-700 rounded-xs"
               onClick={e => closeFile(e, file)}
             >
               <X />
-            </button>
+            </span>
           </TabsTrigger>
         ))}
       </TabsList>

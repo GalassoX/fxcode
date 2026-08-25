@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron'
+import { app, type BrowserWindow, ipcMain } from 'electron'
 
 import { makeAppWithSingleInstanceLock } from 'lib/electron-app/factories/app/instance'
 import { makeAppSetup } from 'lib/electron-app/factories/app/setup'
@@ -9,7 +9,9 @@ import { waitFor } from 'shared/utils'
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import type { Dirent } from 'node:fs'
+import { getFiles } from './files'
+
+const cwd = process.cwd()
 
 makeAppWithSingleInstanceLock(async () => {
   await app.whenReady()
@@ -26,49 +28,25 @@ makeAppWithSingleInstanceLock(async () => {
       window.webContents.reload()
     })
   }
+
+  watchFolder(window, cwd)
 })
 
-async function readDirectory(directoryPath: string): Promise<FileTree[]> {
-  const entries = await fs.readdir(directoryPath, {
-    withFileTypes: true,
-  })
+async function watchFolder(window: BrowserWindow, path: string) {
+  const watcher = fs.watch(path)
+  let timeout: NodeJS.Timeout | null = null
+  for await (const _event of watcher) {
+    if (timeout) clearTimeout(timeout)
 
-  entries.sort((a: Dirent<string>, b: Dirent<string>) => {
-    if (a.isDirectory() && !b.isDirectory()) return -1
-
-    if (!a.isDirectory() && b.isDirectory()) return 1
-
-    return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
-  })
-
-  const result: FileTree[] = []
-
-  for (const entry of entries) {
-    const fullPath = path.join(directoryPath, entry.name)
-
-    if (entry.isDirectory()) {
-      const children = await readDirectory(fullPath)
-
-      result.push({
-        name: entry.name,
-        path: fullPath,
-        type: 'directory',
-        children,
-      })
-    } else {
-      result.push({
-        name: entry.name,
-        path: fullPath,
-        type: 'file',
-      })
-    }
+    timeout = setTimeout(async () => {
+      const newFiles = await getFiles(cwd)
+      window.webContents.send(IPC_EVENTS.FS_ON_CWD_CHANGE, newFiles)
+    }, 100)
   }
-
-  return result
 }
 
 ipcMain.handle(IPC_EVENTS.FS_GET_FILES, async (): Promise<FileTree[]> => {
-  return await readDirectory(process.cwd())
+  return getFiles(cwd)
 })
 
 ipcMain.handle(IPC_EVENTS.FS_GET_FILE_CONTENT, async (_, filePath) => {
@@ -76,5 +54,5 @@ ipcMain.handle(IPC_EVENTS.FS_GET_FILE_CONTENT, async (_, filePath) => {
 })
 
 ipcMain.handle(IPC_EVENTS.FS_GET_CURRENT_FOLDER_NAME, () => {
-  return path.basename(process.cwd())
+  return path.basename(cwd)
 })

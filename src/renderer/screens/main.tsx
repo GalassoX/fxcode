@@ -1,21 +1,29 @@
 import { useEffect } from 'react'
 import { Editor } from 'renderer/components/editor'
-import { FileExplorer } from 'renderer/components/file-explorer'
+import { Explorer } from 'renderer/components/explorer'
+import { useCurrentFolder } from 'renderer/states/currentFolder'
 
-// The "App" comes from the context bridge in preload/index.ts
-const { App } = window
+const { fs } = window
 
 export function MainScreen() {
+  const { getFiles, setFiles } = useCurrentFolder()
   useEffect(() => {
-    // check the console on dev tools
-    App.sayHelloFromBridge()
+    getFiles()
+
+    const unsubscriber = fs.onCwdChange(onCwdChange)
+
+    return () => {
+      unsubscriber()
+    }
   }, [])
+
+  const onCwdChange = (newFiles: FileTree[]) => {
+    setFiles(newFiles)
+  }
 
   return (
     <main className="flex justify-center h-screen overflow-hidden bg-background">
-      <div className="w-1/3 h-full overflow-hidden">
-        <FileExplorer />
-      </div>
+      <Explorer />
 
       <div className="w-2/3 h-full overflow-hidden">
         <Editor />
